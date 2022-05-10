@@ -19,3 +19,5 @@ RUN chmod -R 755 /usr/local/bin/*
 RUN mkdir /output
 
 ENV MYSQL_PATH ${MYSQL_FILE}
+
+RUN rm -rf /var/lib/apt/lists/*
