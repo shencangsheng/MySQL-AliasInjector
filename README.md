@@ -26,7 +26,7 @@ unzip mysql-server-5.7.zip
 ### Add an Alias to Mysql System Lex
 
 ```bash
-docker run --rm -v $(pwd)/mysql-server-5.7:/mysql-server-5.7 shencangsheng/mysql-system-lex-alias add-lex-alias -f /mysql-server-5.7 -c REGEXP -v REGEXP_ALIAS
+docker run --rm -v $(pwd)/mysql-server-5.7:/mysql-server-5.7 shencangsheng/mysql-system-lex-alias:latest add-lex-alias -f /mysql-server-5.7 -c REGEXP -v REGEXP_ALIAS
 ```
 
 ### Compile Mysql Server Source Code
