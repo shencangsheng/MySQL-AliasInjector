@@ -31,13 +31,13 @@ docker run --rm -v $(pwd)/mysql-server-5.7:/mysql-server-5.7 shencangsheng/mysql
 
 ### 编译源代码
 
-- 基于多层构建编译，性能极佳 **[推荐]**
+- **[ 推荐 ]** 基于多层构建编译，性能极佳
 
 ```bash
 docker build --target compile --target compile-builder -t ${username}/mysql:latest .
 ```
 
-- 基于挂载形式编译, 编译缓慢, 并输出压缩文件 **[不推荐]**
+- **[ 不推荐 ]** 基于挂载形式编译, 编译缓慢, 并输出压缩文件
 
 ```bash
 docker run --rm -v $(pwd)/mysql-server-5.7:/usr/local/mysql-server -v $(pwd)/output:/output shencangsheng/mysql-source-compile:latest package-mysql

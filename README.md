@@ -31,13 +31,13 @@ docker run --rm -v $(pwd)/mysql-server-5.7:/mysql-server-5.7 shencangsheng/mysql
 
 ### Compile Mysql Server Source Code
 
-- Build based on multiple segments, quickly. **[advice]**
+- **[ advice ]** Build based on multiple segments, quickly.
 
 ```bash
 docker build --target compile --target compile-builder -t ${username}/mysql:latest .
 ```
 
-- Based on the mount, Compile the slow, Output compression package. **[deprecated]**
+- **[ deprecated ]** Based on the mount, Compile the slow, Output compression package.
 
 ```bash
 docker run --rm -v $(pwd)/mysql-server-5.7:/usr/local/mysql-server -v $(pwd)/output:/output shencangsheng/mysql-source-compile:latest package-mysql
