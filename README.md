@@ -2,7 +2,7 @@
 
 English | [简体中文](./i18n/README.zh-cn.md)
 
-Add an Alias to Mysql System Lex
+Add an alias for your Mysql system reserved fields
 
 [DockerHub Repositorie](https://hub.docker.com/r/shencangsheng/mysql-system-lex-alias)
 
@@ -11,6 +11,7 @@ Add an Alias to Mysql System Lex
     - [Download Mysql Server Source Code](#download-mysql-server-source-code)
     - [Add an Alias to Mysql System Lex](#add-an-alias-to-mysql-system-lex)
     - [Compile Mysql Server Source Code](#compile-mysql-server-source-code)
+    - [Effect](#effect)
   - [License](#license)
 
 ## How to use for your
@@ -42,6 +43,12 @@ docker build --target compile --target compile-builder -t ${username}/mysql:late
 docker run --rm -v $(pwd)/mysql-server-5.7:/usr/local/mysql-server -v $(pwd)/output:/output shencangsheng/mysql-source-compile:latest package-mysql
 docker build --target copy-builder -t ${username}/mysql:latest .
 ```
+
+### Effect
+
+<p align="center">
+<img src="docs/content/assets/img/regexp.alias.png" alt="Regexp" title="Regexp" />
+</p>
 
 ## License
 
