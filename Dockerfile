@@ -2,7 +2,7 @@ FROM shencangsheng/mysql-source-compile:latest as compile
 
 ARG MYSQL_INPUT_FILE=mysql-server-5.7
 
-COPY ${MYSQL_INPUT_FILE} ${MYSQL_FILE}
+COPY ${MYSQL_INPUT_FILE} ${MYSQL_PATH}
 
 RUN compile-mysql
 
