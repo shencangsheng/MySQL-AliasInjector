@@ -20,7 +20,7 @@ Add an alias for your Mysql system reserved fields
 
 ```bash
 wget https://codeload.github.com/mysql/mysql-server/zip/refs/heads/5.7
-unzip mysql-server-5.7.zip
+unzip 5.7
 ```
 
 ### Add an Alias to Mysql System Lex

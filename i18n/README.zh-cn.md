@@ -20,7 +20,7 @@
 
 ```bash
 wget https://codeload.github.com/mysql/mysql-server/zip/refs/heads/5.7
-unzip mysql-server-5.7.zip
+unzip 5.7
 ```
 
 ### 添加一个系统关键词别名

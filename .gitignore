@@ -3,3 +3,5 @@
 *.settings
 *.iml
 .DS_Store
+5.7
+mysql-server-5.7

@@ -1,6 +1,6 @@
 #!/bin/bash
 # creator by shencangsheng
-set -xe
+set -e
 
 mysql_file=
 mysql_lex=
