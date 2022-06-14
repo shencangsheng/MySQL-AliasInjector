@@ -76,6 +76,11 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
+      - name: Prepare
+        id: prepare
+        run: |
+          echo ::set-output name=version::${GITHUB_REF#refs/*/}
+
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
@@ -88,10 +93,15 @@ jobs:
         with:
           images: shencangsheng/mysql-source-compile
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: ./compile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v3
+
+      - name: Docker Buildx (push)
+        run: |
+          docker buildx build \
+            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x \
+            --output "type=image,push=true" \
+            --tag shencangsheng/mysql-source-compile:latest \
+            --tag shencangsheng/mysql-source-compile:${{ steps.prepare.outputs.version }} \
+            --file ./compile/Dockerfile ./compile
