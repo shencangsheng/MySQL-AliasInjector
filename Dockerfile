@@ -1,4 +1,4 @@
-FROM shencangsheng/mysql-source-compile:latest as compile
+FROM --platform=linux/amd64 shencangsheng/mysql-source-compile:latest as compile
 
 ARG MYSQL_INPUT_FILE=mysql-server-5.7
 
@@ -6,7 +6,7 @@ COPY ${MYSQL_INPUT_FILE} ${MYSQL_PATH}
 
 RUN compile-mysql
 
-FROM debian:buster-slim as compile-builder
+FROM --platform=linux/amd64 debian:buster-slim as compile-builder
 
 COPY --from=compile /usr/local/mysql /usr/local/mysql
 
@@ -17,6 +17,8 @@ RUN groupadd mysql \
     && mkdir -p /var/lib/mysql \
     && chown -R mysql:mysql /usr/local/mysql \
     && chown -R mysql:mysql /var/lib/mysql
+
+WORKDIR /usr/local/mysql
 
 RUN ./bin/mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/var/lib/mysql \
     && ./bin/mysql_ssl_rsa_setup
@@ -36,7 +38,7 @@ EXPOSE 3306 33060
 
 CMD ["mysqld"]
 
-FROM debian:buster-slim as copy-builder
+FROM --platform=linux/amd64 debian:buster-slim as copy-builder
 
 COPY output/mysql.tar.gz /
 
@@ -49,6 +51,8 @@ RUN groupadd mysql \
     && mkdir -p /var/lib/mysql \
     && chown -R mysql:mysql /usr/local/mysql \
     && chown -R mysql:mysql /var/lib/mysql
+
+WORKDIR /usr/local/mysql
 
 RUN ./bin/mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/var/lib/mysql \
     && ./bin/mysql_ssl_rsa_setup
