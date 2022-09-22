@@ -1,6 +1,15 @@
-FROM ubuntu:16.04
+FROM debian:stretch-slim
 
 ARG MYSQL_FILE=/usr/local/mysql-server
+
+ARG POSTTION
+
+RUN if [[ "${POSTTION}" = "CN" ]] ; then \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ stretch main contrib non-free" > /etc/apt/sources.list; \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ stretch-updates main contrib non-free" >> /etc/apt/sources.list; \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian/ stretch-backports main contrib non-free" >> /etc/apt/sources.list; \
+    echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian-security stretch/updates main contrib non-free" >> /etc/apt/sources.list; \
+    fi
 
 RUN apt update
 
