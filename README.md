@@ -2,7 +2,7 @@
 
 English | [简体中文](./i18n/README.zh-cn.md)
 
-Add an alias for your Mysql system reserved fields
+Add an alias for your MySQL system reserved fields
 
 [DockerHub Repositorie](https://hub.docker.com/r/shencangsheng/mysql-system-lex-alias)
 
