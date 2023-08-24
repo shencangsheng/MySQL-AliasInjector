@@ -2,7 +2,7 @@
 
 [English](https://github.com/shencangsheng/Mysql-System-Lex-Alias) | 简体中文
 
-给你的 Mysql 系统保留字段添加一个别名
+给你的 MySQL 系统保留字段添加一个别名
 
 [DockerHub Repositorie](https://hub.docker.com/r/shencangsheng/mysql-system-lex-alias)
 
