@@ -1,4 +1,4 @@
-# Mysql System Lex Alias
+# MySQL System Lex Alias
 
 English | [简体中文](./i18n/README.zh-cn.md)
 
