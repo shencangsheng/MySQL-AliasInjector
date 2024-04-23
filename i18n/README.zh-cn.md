@@ -1,50 +1,25 @@
-# Mysql System Lex Alias
+# MySQL AliasInjector
 
-[English](https://github.com/shencangsheng/Mysql-System-Lex-Alias) | 简体中文
+[English](https://github.com/shencangsheng/MySQL-AliaInjector) | 简体中文
 
-给你的 MySQL 系统保留字段添加一个别名
+SQLAliasInjector 是一款基于 Docker 的源生编译 MySQL 并添加一个 SQL 变量的别名工具，主要用于绕过防火墙或堡垒机的 SQL 注入检查。
 
-[DockerHub Repositorie](https://hub.docker.com/r/shencangsheng/mysql-system-lex-alias)
-
-- [Mysql System Lex Alias](#mysql-system-lex-alias)
-  - [如何使用](#如何使用)
-    - [下载 MYSQL 源码](#下载-mysql-源码)
-    - [添加一个系统关键词别名](#添加一个系统关键词别名)
-    - [编译源代码](#编译源代码)
-    - [效果](#效果)
-  - [License](#license)
+创建 SQL 变量别名：设置自定义别名以替代标准的 SQL 注入变量，使得 SQL 注入在防火墙和堡垒机前“隐身”。
 
 ## 如何使用
 
-### 下载 MYSQL 源码
-
 ```bash
-wget https://codeload.github.com/mysql/mysql-server/zip/refs/heads/5.7
-unzip 5.7
+docker build -t sample/mysql:5.7 --build-arg CP="REGEXP=REGEXP_ALIAS" --build-arg JOB="4" .
 ```
 
-### 添加一个系统关键词别名
+### Args
 
-```bash
-docker run --rm -v $(pwd)/mysql-server-5.7:/mysql-server-5.7 shencangsheng/mysql-system-lex-alias:latest add-lex-alias -f /mysql-server-5.7 -c REGEXP -v REGEXP_ALIAS
-```
+| Args | Desc                           |
+| ---- | ------------------------------ |
+| CP   | 使用「,」分隔多个              |
+| JOB  | 编译时使用的核心数，default: 1 |
 
-### 编译源代码
-
-- **[ 推荐 ]** 基于多层构建编译，性能极佳
-
-```bash
-docker build --target compile --target compile-builder -t ${username}/mysql:latest .
-```
-
-- **[ 不推荐 ]** 基于挂载形式编译, 编译缓慢, 并输出压缩文件
-
-```bash
-docker run --rm -v $(pwd)/mysql-server-5.7:/usr/local/mysql-server -v $(pwd)/output:/output shencangsheng/mysql-source-compile:latest package-mysql
-docker build --target copy-builder -t ${username}/mysql:latest .
-```
-
-### 效果
+## 效果
 
 <p align="center">
 <img src="../docs/content/assets/img/regexp.alias.png" alt="Regexp" title="Regexp" />

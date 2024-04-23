@@ -1,50 +1,25 @@
-# MySQL System Lex Alias
+# MySQL AliasInjector
 
 English | [简体中文](./i18n/README.zh-cn.md)
 
-Add an alias for your MySQL system reserved fields
+SQLAliasInjector is a Docker-based tool that enables native compilation of MySQL and allows adding aliases to SQL variables, designed primarily for bypassing SQL Injection checks from firewalls and bastions.
 
-[DockerHub Repositorie](https://hub.docker.com/r/shencangsheng/mysql-system-lex-alias)
-
-- [Mysql System Lex Alias](#mysql-system-lex-alias)
-  - [How to use for your](#how-to-use-for-your)
-    - [Download Mysql Server Source Code](#download-mysql-server-source-code)
-    - [Add an Alias to Mysql System Lex](#add-an-alias-to-mysql-system-lex)
-    - [Compile Mysql Server Source Code](#compile-mysql-server-source-code)
-    - [Effect](#effect)
-  - [License](#license)
+Creation of SQL Variable Aliases: Facilitates to establish custom aliases to replace standard SQL Injection variables, rendering the SQL Injection "invisible" to firewalls and bastions.
 
 ## How to use for your
 
-### Download Mysql Server Source Code
-
 ```bash
-wget https://codeload.github.com/mysql/mysql-server/zip/refs/heads/5.7
-unzip 5.7
+docker build -t sample/mysql:5.7 --build-arg CP="REGEXP=REGEXP_ALIAS" --build-arg JOB="4" .
 ```
 
-### Add an Alias to Mysql System Lex
+### Args
 
-```bash
-docker run --rm -v $(pwd)/mysql-server-5.7:/mysql-server-5.7 shencangsheng/mysql-system-lex-alias:latest add-lex-alias -f /mysql-server-5.7 -c REGEXP -v REGEXP_ALIAS
-```
+| Args | Desc                                         |
+| ---- | -------------------------------------------- |
+| CP   | that match the specified pattern(「,」split) |
+| JOB  | Compile using the number of cores,default: 1 |
 
-### Compile Mysql Server Source Code
-
-- **[ advice ]** Build based on multiple segments, quickly.
-
-```bash
-docker build --target compile --target compile-builder -t ${username}/mysql:latest .
-```
-
-- **[ deprecated ]** Based on the mount, Compile the slow, Output compression package.
-
-```bash
-docker run --rm -v $(pwd)/mysql-server-5.7:/usr/local/mysql-server -v $(pwd)/output:/output shencangsheng/mysql-source-compile:latest package-mysql
-docker build --target copy-builder -t ${username}/mysql:latest .
-```
-
-### Effect
+## Effect
 
 <p align="center">
 <img src="docs/content/assets/img/regexp.alias.png" alt="Regexp" title="Regexp" />
