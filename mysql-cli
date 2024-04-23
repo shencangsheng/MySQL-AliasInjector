@@ -1,0 +1,134 @@
+#!/bin/bash
+# creator by shencangsheng
+set -e
+
+Error() {
+    echo -e "\033[31m[Error] $1 \033[0m" >&2
+}
+
+Usage() {
+    echo -e "\033[33m[Usage] $1 \033[0m" >&2
+}
+
+Info() {
+    echo -e "[Info] $1" >&2
+}
+
+Todo() {
+    echo -e "\033[36m[Todo] $1 \033[0m" >&2
+}
+
+Notice() {
+    echo -e "\033[33m[Important] $1 \033[0m" >&2
+}
+
+GLOAB_ARGS=("$@")
+
+MYSQL_FILE_NAME="mysql-server-5.7"
+
+function contains_args() {
+    local key="$1"
+    for arg in "${GLOAB_ARGS[@]}"; do
+        case $arg in
+        "${key}")
+            return 0
+            ;;
+        esac
+    done
+    return 1
+}
+
+function get_args_value() {
+    local key="--$1"
+    local def_value=$2
+    local value=$def_value
+    for arg in "${GLOAB_ARGS[@]}"; do
+        case $arg in
+        "${key}="*)
+            value="${arg#*=}"
+            break
+            ;;
+        esac
+    done
+    if [ -z "$value" ]; then
+        Error "「${key}」Variable is empty"
+        kill -9 $$
+    fi
+    if [ "$def_value" == "--Blank" ]; then
+        value=''
+    fi
+    echo $value
+}
+
+function check_directory() {
+    if [ ! -d "$1" ]; then
+        Error "「$1」 No such directory / Must be a directory"
+        exit 1
+    fi
+}
+
+function check_file() {
+    if [ ! -f "$1" ]; then
+        Error "「$1」 No such file / Must be a file"
+        exit 1
+    fi
+}
+
+function cp_keyword() {
+    local alias=$(get_args_value "cp")
+
+    if ! contains_args "--ignore"; then
+        wget --tries=5 --no-check-certificate -P /tmp/ https://codeload.github.com/mysql/mysql-server/zip/refs/heads/5.7
+        unzip /tmp/5.7 -d /tmp/
+    fi
+
+    local mysql_path=$(get_args_value "mysql-path" "/tmp")
+    mysql_path=${mysql_path%/}
+
+    local mysql_dir="${mysql_path}/${MYSQL_FILE_NAME}"
+    check_directory $mysql_dir
+
+    local mysql_lex_file="${mysql_dir}/sql/lex.h"
+    check_file $mysql_lex_file
+
+    for kv in ${alias[@]}; do
+        local key=${kv%%=*}
+        local value=${kv#*=}
+        local len=$(grep -n -s "{.*\(\"${key}\",.*\)}," $mysql_lex_file)
+        local len_line=$(echo $len | awk -F ': ' '{print $1}')
+        local len_keyword=$(echo $len | awk -F ': ' '{print $2}')
+        local sed_instruction="s/\""${key}"\"/\""${value}"\"/g"
+        local alias_keyword=$(echo ${len_keyword} | sed ${sed_instruction})
+        sed -i "${len_line}a ${alias_keyword}" ${mysql_lex_file}
+    done
+}
+
+function build() {
+    local mysql_path=$(get_args_value "mysql-path" "/tmp")
+    mysql_path=${mysql_path%/}
+
+    local mysql_dir="${mysql_path}/${MYSQL_FILE_NAME}"
+    check_directory $mysql_dir
+
+    cd $mysql_dir
+
+    cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/var/lib/mysql -DWITH_BOOST=/usr/local/boost_1_59_0 -DSYSCONFDIR=/etc -DEXTRA_CHARSETS=all
+    make -j $(get_args_value "job" 1)
+    make install
+}
+
+action=$(get_args_value 'action')
+
+case $action in
+"cp")
+    cp_keyword
+    ;;
+
+"build")
+    build
+    ;;
+*)
+    Error "Unknown option ${action}"
+    exit 1
+    ;;
+esac
