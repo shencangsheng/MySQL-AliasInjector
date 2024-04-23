@@ -4,6 +4,8 @@ SHELL ["/bin/bash", "-c"]
 
 ARG CP
 
+ARG JOB=1
+
 RUN apt update \
     && apt-get install --no-install-recommends binutils wget cmake bison libncurses5-dev wget build-essential libssl-dev pkg-config unzip libaio-dev -y
 
@@ -19,7 +21,7 @@ RUN wget --tries=5 --no-check-certificate https://sourceforge.net/projects/boost
     && tar -zxvf boost_1_59_0.tar.gz -C /usr/local/ \
     && rm -f boost_1_59_0.tar.gz
 
-RUN mysql-cli --action="build"
+RUN mysql-cli --action="build" --job="$JOB"
 
 WORKDIR /usr/local/mysql
 
