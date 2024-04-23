@@ -34,7 +34,7 @@ RUN groupadd mysql \
 
 COPY --from=build --chown=mysql:mysql /usr/local/mysql /usr/local/mysql
 
-RUN apt update && apt install --no-install-recommends openssl libatomic1 libncurses5 gosu libaio-dev -y
+RUN apt update && apt install --no-install-recommends openssl libatomic1 gosu libaio-dev libncurses5-dev -y
 
 RUN mkdir -p /etc/mysql/conf.d && echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
@@ -62,8 +62,10 @@ ENV PATH "/usr/local/mysql/bin:${PATH}"
 
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 
+RUN apt clean && rm -rf /var/lib/apt/lists/*
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 3306 33060
 
-RUN apt clean && rm -rf /var/lib/apt/lists/*
+CMD ["mysqld"]
