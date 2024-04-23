@@ -27,6 +27,10 @@ WORKDIR /usr/local/mysql
 
 RUN find . -type f -executable -exec strip --strip-all {} \;
 
+RUN groupadd mysql \
+    && useradd -r -g mysql mysql \
+    && chown -R mysql:mysql /usr/local/mysql
+
 FROM --platform=amd64 debian:buster-slim
 
 COPY --from=build /usr/local/mysql /usr/local/mysql
@@ -38,7 +42,6 @@ RUN mkdir -p /etc/mysql/conf.d && echo '[mysqld]\nskip-host-cache\nskip-name-res
 RUN groupadd mysql \
     && useradd -r -g mysql mysql \
     && mkdir -p /var/lib/mysql \
-    && chown -R mysql:mysql /usr/local/mysql \
     && chown -R mysql:mysql /var/lib/mysql
 
 WORKDIR /usr/local/mysql
