@@ -27,21 +27,19 @@ WORKDIR /usr/local/mysql
 
 RUN find . -type f -executable -exec strip --strip-all {} \;
 
-RUN groupadd mysql \
-    && useradd -r -g mysql mysql \
-    && chown -R mysql:mysql /usr/local/mysql
-
 FROM --platform=amd64 debian:buster-slim
 
-COPY --from=build /usr/local/mysql /usr/local/mysql
+RUN groupadd mysql \
+    && useradd -r -g mysql mysql
+
+COPY --from=build --chown=mysql:mysql /usr/local/mysql /usr/local/mysql
 
 RUN apt update && apt install --no-install-recommends openssl libatomic1 libncurses5 gosu libaio-dev -y
 
 RUN mkdir -p /etc/mysql/conf.d && echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
-RUN groupadd mysql \
-    && useradd -r -g mysql mysql \
-    && mkdir -p /var/lib/mysql \
+RUN mkdir -p /var/lib/mysql \
+    && chown -R mysql:mysql /usr/local/mysql \
     && chown -R mysql:mysql /var/lib/mysql
 
 WORKDIR /usr/local/mysql
