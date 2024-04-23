@@ -39,7 +39,6 @@ RUN apt update && apt install --no-install-recommends openssl libatomic1 libncur
 RUN mkdir -p /etc/mysql/conf.d && echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
 RUN mkdir -p /var/lib/mysql \
-    && chown -R mysql:mysql /usr/local/mysql \
     && chown -R mysql:mysql /var/lib/mysql
 
 WORKDIR /usr/local/mysql
