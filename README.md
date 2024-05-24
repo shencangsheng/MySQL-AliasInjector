@@ -2,9 +2,7 @@
 
 English | [简体中文](./i18n/README.zh-cn.md)
 
-SQLAliasInjector is a Docker-based tool that enables native compilation of MySQL and allows adding aliases to SQL variables, designed primarily for bypassing SQL Injection checks from firewalls and bastions.
-
-Creation of SQL Variable Aliases: Facilitates to establish custom aliases to replace standard SQL Injection variables, rendering the SQL Injection "invisible" to firewalls and bastions.
+SQLAliasInjector is a tool designed to add alias keywords to `SQL` from the `MySQL` source code level and compile a complete running image of `MySQL` in `Docker`. Its primary purpose is to bypass firewall or bastion host `SQL` injection checks, making the `SQL` injection "invisible" to firewalls and bastion hosts.
 
 ## How to use for your
 

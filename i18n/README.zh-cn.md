@@ -2,9 +2,7 @@
 
 [English](https://github.com/shencangsheng/MySQL-AliasInjector) | 简体中文
 
-SQLAliasInjector 是一款基于 Docker 的源生编译 MySQL 并添加一个 SQL 变量的别名工具，主要用于绕过防火墙或堡垒机的 SQL 注入检查。
-
-创建 SQL 变量别名：设置自定义别名以替代标准的 SQL 注入变量，使得 SQL 注入在防火墙和堡垒机前“隐身”。
+SQLAliasInjector 是一个从 `MySQL` 源码级别添加 `SQL` 的关键字别名的工具，并完整编译 `Docker` 的 `MySQL` 运行镜像，主要用于绕过防火墙或堡垒机的 `SQL` 注入检查，使得 `SQL` 注入在防火墙和堡垒机前“隐身”。
 
 ## 如何使用
 
